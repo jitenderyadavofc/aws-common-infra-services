@@ -122,7 +122,9 @@ EOF
   default     = {}
 }
 
-
+variable "resources" {
+  
+}
   
 
 
@@ -130,7 +132,5 @@ EOF
        
      }
 
-variable "sn_name" {
-  
-}     
+
 

@@ -3,7 +3,7 @@ resource "aws_ec2_transit_gateway" "aws-len-tgw" {
 
 
   tags = merge(
-    { "Name" = "len-tgw-main-pd-01" },
+    { "Name" = "len-aws-tgw-main-pd-01" },
     {
 
       for key1, value1 in var.tags :
@@ -11,4 +11,8 @@ resource "aws_ec2_transit_gateway" "aws-len-tgw" {
 
   })
 
+}
+
+output "tgw-id" {
+  value = aws_ec2_transit_gateway.aws-len-tgw
 }

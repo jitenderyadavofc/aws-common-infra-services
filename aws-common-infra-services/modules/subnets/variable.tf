@@ -2,14 +2,10 @@ variable "resources" {
   
 }
 
-variable "subnet_details" {
+variable "vpc_details" {
   
 }
 
 variable "tag_names" {
-  
-}
-
-variable "tgw_id" {
   
 }

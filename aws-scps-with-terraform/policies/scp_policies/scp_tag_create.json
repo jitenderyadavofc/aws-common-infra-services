@@ -1,0 +1,25 @@
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "Statement1",
+			"Effect": "Deny",
+			"Action": [
+				"ec2:CreateRoute",
+				"ec2:CreateSubnet",
+				"ec2:CreateVpc",
+				"ec2:CreateVolume",
+				"ec2:CreateVpcEndpoint",
+				"s3:CreateBucket"
+			],
+			"Resource": [
+				"arn:aws:ec2:*:*:vpc/*"
+			],
+			"Condition": {
+				"Null": {
+					"aws:RequestTag/Environment": "true"
+				}
+			}
+		}
+	]
+}

@@ -10,6 +10,7 @@ variable "tag_names" {
   
 }
 
-variable "tgw_id" {
+
+variable "fw_policy_details" {
   
 }

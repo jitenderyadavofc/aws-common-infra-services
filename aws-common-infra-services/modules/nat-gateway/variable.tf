@@ -10,6 +10,3 @@ variable "tag_names" {
   
 }
 
-variable "tgw_id" {
-  
-}

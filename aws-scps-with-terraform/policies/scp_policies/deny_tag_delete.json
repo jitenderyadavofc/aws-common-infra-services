@@ -1,0 +1,20 @@
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "Statement1",
+			"Effect": "Deny",
+			"Action": [
+				"ec2:DeleteTags"
+			],
+			"Resource": [
+				"*"
+			],
+			"Condition": {
+				"Null": {
+					"aws:RequestTag/Environment": "false"
+				}
+			}
+		}
+	]
+}

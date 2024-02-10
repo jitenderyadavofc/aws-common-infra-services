@@ -23,6 +23,3 @@ variable "tags" {
 
 }
 
-
-
-
