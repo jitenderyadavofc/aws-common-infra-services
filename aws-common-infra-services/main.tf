@@ -46,7 +46,8 @@ module "len-net-flow-logs-mod" {
   resources   = var.resources
 
 
-  depends_on = [module.ipam]
+
+  depends_on = [module.ipam, module.len-net-vpc-mod]
 }
 
 module "len-net-subnet-mod" {
@@ -56,7 +57,7 @@ module "len-net-subnet-mod" {
   resources   = var.resources
 
 
-  depends_on = [module.ipam]
+  depends_on = [module.ipam, module.len-net-vpc-mod]
 }
 
 output "subnetids" {
