@@ -5,7 +5,22 @@ variable "region" {
 }
 
 
-variable "sandbox_ou" {
-  description = "list of sandbox OUs"
+variable "workload_ou_id" {
+  description = "list of OUs"
   type        = list(string)
 }
+
+# variable "prod_ou_id" {
+#    description = "list of OUs"
+#   type        = list(string)
+# }
+
+# variable "uat_ou_id" {
+#    description = "list of OUs"
+#   type        = list(string)
+# }
+
+# variable "dev_ou_id" {
+
+# }
+

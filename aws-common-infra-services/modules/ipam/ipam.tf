@@ -49,7 +49,7 @@ resource "aws_vpc_ipam_pool_cidr" "lennar_east_infra_ipam_pool_cidr" {
 
 resource "aws_vpc_ipam_pool" "lennar_east_sandbox_ipam_pool" {
   address_family      = "ipv4"
-  description = "Lennar US East 1 Region Sandbox IP Pool"
+  description = "Lennar US East 1 Region sbox IP Pool"
   ipam_scope_id       = aws_vpc_ipam.lennar_global_ipam.private_default_scope_id
   locale              = "us-east-1"
   source_ipam_pool_id = aws_vpc_ipam_pool.lennar_global_ipam_pool.id

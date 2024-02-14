@@ -10,12 +10,18 @@ resource "aws_networkfirewall_firewall_policy" "len-aws-firewall-policy" {
         }
       }
     }
-    stateless_default_actions          = ["aws:pass"]
+   
+    stateless_default_actions          = ["aws:forward_to_sfe"]
     stateless_fragment_default_actions = ["aws:drop"]
-    # stateful_rule_group_reference {
-    #   priority     = 1
-    #   resource_arn = "arn:aws:network-firewall:us-east-1:aws-managed:stateful-rulegroup/AbusedLegitBotNetCommandAndControlDomainsStrictOrder"
-    # }
+    stateful_rule_group_reference {
+      resource_arn = var.rule_group1_details
+    }
+    stateful_rule_group_reference {
+      resource_arn = var.rule_group2_details
+    }
+    stateful_rule_group_reference {
+      resource_arn = var.rule_group3_details
+    }
   }
 
   tags = merge( 

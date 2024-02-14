@@ -24,7 +24,7 @@ resources = {
   res3 = { vpc_name = "len-inspection-pd-vpc03",
     sn_name = "len-network-pd-vpc03-sn3",
     egress  = false
-    nat_gw  = false
+    nat_gw  = false,
     firewall= true
   }
 
