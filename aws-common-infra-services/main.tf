@@ -1,7 +1,3 @@
-locals {
-  tgw_id = module.len-tgw-mod.tgw-id.id
-}
-
 
 #IPAM Module
 module "ipam" {
@@ -14,7 +10,7 @@ module "ipam" {
 
 #VPC Module
 
-module "len-net-vpc-mod" {
+module "len_net_vpc_mod" {
   source    = "./modules/vpc"
   tag_names = var.tags
 
@@ -25,93 +21,70 @@ module "len-net-vpc-mod" {
 }
 
 
-output "vpcids" {
-  value = module.len-net-vpc-mod.vpc_ids
-}
+#vpc flow logs module
 
-# locals {
-#   xyz={ for i,k in module.len-net-vpc-mod.vpc_ids:
-#        i=>k.tags.Name
-#   }
-# }
-
-# output "local-output" {
-#   value = local.xyz
-# }
-
-module "len-net-flow-logs-mod" {
+module "len_net_flow_logs_mod" {
   source    = "./modules/flow_logs"
   tag_names   = var.tags
-  vpc_details = module.len-net-vpc-mod.vpc_ids
+  vpc_details = module.len_net_vpc_mod.vpc_ids
   resources   = var.resources
 
-
-
-  depends_on = [module.ipam, module.len-net-vpc-mod]
+  depends_on = [module.ipam, module.len_net_vpc_mod]
 }
 
-module "len-net-subnet-mod" {
+#subnet module
+
+module "len_net_subnet_mod" {
   source      = "./modules/subnets"
   tag_names   = var.tags
-  vpc_details = module.len-net-vpc-mod.vpc_ids
+  vpc_details = module.len_net_vpc_mod.vpc_ids
   resources   = var.resources
 
 
-  depends_on = [module.ipam, module.len-net-vpc-mod]
+  depends_on = [module.ipam, module.len_net_vpc_mod]
 }
 
-output "subnetids" {
-  value = module.len-net-subnet-mod.subnetids
-}
+#internet gateway module
 
-
-module "len-net-igw-mod" {
+module "len_net_igw_mod" {
   source = "./modules/internet-gateway"
 
   tag_names   = var.tags
-  vpc_details = module.len-net-vpc-mod.vpc_ids
+  vpc_details = module.len_net_vpc_mod.vpc_ids
   resources   = var.resources
-  depends_on  = [module.ipam, module.len-net-vpc-mod]
+  depends_on  = [module.ipam, module.len_net_vpc_mod]
+
+
 }
 
-output "igw-output" {
-  value = module.len-net-igw-mod.igws-ids
-}
+
 #tgw module
 
-module "len-tgw-mod" {
+module "len_tgw_mod" {
   source = "./modules/tgw"
   tags   = var.tags
 
 }
 
-output "tgw-output" {
-  value = module.len-tgw-mod.tgw-id
-}
-
-
-module "len-tgw-attachment-mod" {
+module "len_tgw_attachment_mod" {
   source         = "./modules/tgw-attachments"
   tag_names      = var.tags
   tgw_id         = local.tgw_id
-  subnet_details = module.len-net-subnet-mod.subnetids
+  subnet_details = module.len_net_subnet_mod.subnetids
   resources      = var.resources
 
-  depends_on = [module.len-tgw-mod]
+  depends_on = [module.len_tgw_mod, module.len_net_subnet_mod]
 }
 
-output "tgwa-output" {
-  value = module.len-tgw-attachment-mod.tgwa-output
-}
 
 
 # module "len-nat-gateway-mod" {
 #   source         = "./modules/nat-gateway"
 #   tag_names      = var.tags
-#   subnet_details = module.len-net-subnet-mod.subnetids
+#   subnet_details = module.len_net_subnet_mod.subnetids
 #   resources      = var.resources
 
-
+#   depends_on=[module.len_net_vpc_mod]
 # }
 
 # output "nat-gw-output" {
@@ -120,24 +93,24 @@ output "tgwa-output" {
 
 ########################### FIREWALL #######################################
 
-module "len-aws-network-firewall" {
+#firewall module
+
+module "len_aws_network_firewall" {
   source = "./modules/network-firewall/firewall"
 
   tag_names      = var.tags
 
-  subnet_details = module.len-net-subnet-mod.subnetids
+  subnet_details = module.len_net_subnet_mod.subnetids
   resources      = var.resources
-  fw_policy_details=module.len-aws-fw-policy-mod.fw_policy-output
+  fw_policy_details=module.len_aws_fw_policy_mod.fw_policy-output
 
-  depends_on = [ module.len-net-subnet-mod, module.len-aws-fw-policy-mod]
+  depends_on = [ module.len_net_subnet_mod, module.len_aws_fw_policy_mod]
   
 }
 
-output "len-aws-fw-output" {
-  value = module.len-aws-network-firewall.fw-output
-}
+#firewall policy module
 
-module "len-aws-fw-policy-mod" {
+module "len_aws_fw_policy_mod" {
   source = "./modules/network-firewall/policy"
   
   tag_names      = var.tags
@@ -147,30 +120,19 @@ module "len-aws-fw-policy-mod" {
   rule_group3_details = local.fw_rule_group3-output
 
 
-  depends_on = [module.len-aws-fw-rule-group-mod]
+  depends_on = [module.len_aws_fw_rule_group_mod]
   
 }
 
-output "fw_policy_output" {
-  value = module.len-aws-fw-policy-mod.fw_policy-output
-}
+#firewall rule group module
 
-
-
-
-
-module "len-aws-fw-rule-group-mod" {
+module "len_aws_fw_rule_group_mod" {
   source = "./modules/network-firewall/rule-group"
   tag_names      = var.tags
 
-  depends_on = [module.len-tgw-mod]
   
 }
 
-locals{ 
-  fw_rule_group1-output=module.len-aws-fw-rule-group-mod.rule_group1_output.arn
-  fw_rule_group2-output=module.len-aws-fw-rule-group-mod.rule_group2_output.arn
-  fw_rule_group3-output=module.len-aws-fw-rule-group-mod.rule_group3_output.arn
-}
+
 
 

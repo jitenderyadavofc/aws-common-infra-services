@@ -16,21 +16,3 @@ module "len-config-rule-mod" {
   depends_on = [module.len-config-rc-mod]
 }
 
-resource "aws_config_config_rule" "approved-amis-by-tag" {
-  name        = upper("config_rule-approved-amis-by-tag")
-  description = "Checks whether running instances are using specified AMIs. Running instances that dont have at least one of the specified tags are noncompliant"
-
-  source {
-    owner             = "AWS"
-    source_identifier = "APPROVED_AMIS_BY_TAG"
-  }
-
-  input_parameters = jsonencode({
-    "amisByTagKeyAndValue" = {
-      "approvedAmiLinux"       = "amazonLinux",
-      "approvedAmiLinux2"      = "amazonLinux2",
-      "approvedAmiUbuntu20.04" = "Ubuntu20.04",
-      "approvedAmiUbuntu22.04" = "Ubuntu22.04"
-    }
-  })
-}

@@ -1,4 +1,20 @@
 config_rules_list = {
+  
+  # "iam-policy-in-use" = {
+  # input_params = true,
+  # parameters = {
+  # "policyARN" = "arn:aws:iam::809244893916:user/jitender@gmail.com" } },
+
+   "approved-amis-by-id" = {
+    input_params = true,
+    parameters = {
+  "amiIds" = "ami-0e731c8a588258d0d" } },
+
+  "s3-bucket-blacklisted-actions-prohibited" = {
+    input_params = true,
+    parameters = {
+  "blacklistedActionPattern" : "s3:DeleteObject" } },
+
   "s3-bucket-versioning-enabled" = {
   input_params = false }
 
@@ -80,17 +96,5 @@ config_rules_list = {
   "ec2-instance-no-public-ip" = {
   input_params = false }
   
-  "access-keys-rotated" = {
-    input_params = true,
-    parameters = {
-  "maxAccessKeyAge" = "90" } }
-  "iam-policy-in-use" = {
-    input_params = true,
-    parameters = {
-  "policyARN" = "arn:aws:iam::809244893916:user/jitender@gmail.com" } },
 
-  "s3-bucket-blacklisted-actions-prohibited" = {
-    input_params = true,
-    parameters = {
-  "blacklistedActionPattern" : "s3:DeleteObject" } },
 }
